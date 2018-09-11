@@ -66,7 +66,10 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 		$field_data = parent::to_json($load);
 
 		$field_data = array_merge($field_data, [
-			'value_delimiter' => $this->value_delimiter
+			'value_delimiter' => $this->value_delimiter,
+			'base_endpoint' => $this->endpoint,
+			'search_endpoint' => $this->endpoint . '/?search=',
+			'fetch_by_id_endpoint' => $this->endpoint . '/?include=',
 		]);
 
 		return $field_data;

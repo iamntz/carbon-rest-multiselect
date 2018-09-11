@@ -3,7 +3,13 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose, withHandlers, withState, setStatic } from 'recompose';
+import {
+	compose,
+	withHandlers,
+	withState,
+	setStatic,
+	lifecycle,
+} from 'recompose';
 
 /**
  * The internal dependencies.
@@ -24,9 +30,9 @@ export const rest_multiselect = ({
 		<Field field={field}>
 			<AsyncSelect
 				name={name}
-				delimiter="|"
+				value={field.value && typeof field.value[0] === 'object' ? field.value : []}
+				delimiter={field.value_delimiter}
 				disabled={!field.ui.is_visible}
-				defaultOptions={field.value}
 				loadOptions={loadOptions}
 				onChange={handleChange}
 				isMulti
@@ -47,53 +53,56 @@ rest_multiselect.propTypes = {
 	loadOptions: PropTypes.func,
 };
 
-const resolve = (path, obj) => path.split('.')
-	.reduce((prev, curr) => (prev ? prev[curr] : null), obj);
+const resolve = (path, obj) =>
+	path.split('.').reduce((prev, curr) => (prev ? prev[curr] : null), obj);
+
+const getFetchPromise = (endpoint, setSelected = null) => {
+	let parseData = (data) => {
+		return {
+			value: resolve('id', data),
+			label: resolve('title.rendered', data),
+		};
+	};
+
+	return fetch(endpoint)
+		.then((r) => r.json())
+		.then((data) => {
+			if ('function' === typeof setSelected) {
+				setSelected([data])
+			}
+			return data.map(parseData);
+		});
+};
 
 export const enhance = compose(
 	withStore(),
 	withSetup(),
-  withState('selected', 'setSelected'),
+	withState('selected', 'setSelected'),
+
+	lifecycle({
+		componentWillMount() {
+			let { field, setFieldValue, setSelected } = this.props;
+
+			if (field.value) {
+				let value = field.value.join(',');
+				getFetchPromise(field.fetch_by_id_endpoint + value, setSelected).then((data) => {
+					setFieldValue(field.id, data);
+				});
+			}
+		},
+	}),
 
 	withHandlers({
 		handleChange: ({ field, setFieldValue, setSelected }) => (value) => {
-			console.log(value);
 			setFieldValue(field.id, value);
 		},
 
-		loadOptions: ({field, setSelected}) => (searchQuery) => {
-			let parseData = (data) => {
-				return {
-					value: resolve('id', data),
-					label: resolve('title.rendered', data),
-				};
-			}
+		loadOptions: ({ field, setSelected }) => (q) => {
+			let endpoint = q.length
+				? `${field.search_endpoint}${q}`
+				: field.base_endpoint;
 
-
-			let baseEndpoint = '/wp-json/wp/v2/events';
-			let searchEndpoint = `${baseEndpoint}/?search=`;
-			let fetchByIdsEndpoint = `${baseEndpoint}/?include=`;
-			let fetchByIdEndpointSeparator = ',';
-
-			let endpoint = baseEndpoint;
-
-			console.log(field.value);
-			if (field.value.length) {
-			  endpoint = fetchByIdsEndpoint + field.value.join(fetchByIdEndpointSeparator);
-			}
-
-			if (searchQuery.length) {
-			  endpoint = searchEndpoint + searchQuery;
-			}
-
-			return fetch(endpoint)
-				.then(r => r.json())
-				.then(data => {
-          console.log('parsed: ', data.map(parseData));
-          setSelected([data.map(parseData)]);
-
-          return data.map(parseData);
-        })
+			return getFetchPromise(endpoint, setSelected);
 		},
 	}),
 );
