@@ -19,6 +19,8 @@ import withStore from 'fields/decorators/with-store';
 import withSetup from 'fields/decorators/with-setup';
 
 import AsyncSelect from 'react-select/lib/Async';
+import he from 'he';
+
 
 export const rest_multiselect = ({
 	name,
@@ -60,7 +62,7 @@ const getFetchPromise = (endpoint, setSelected = null) => {
 	let parseData = (data) => {
 		return {
 			value: resolve('id', data),
-			label: resolve('title.rendered', data),
+			label: he.decode(resolve('title.rendered', data)),
 		};
 	};
 

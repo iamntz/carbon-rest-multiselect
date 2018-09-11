@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "he": "^1.1.1",
     "lodash": "^4.17.4",
     "object-path-immutable": "^0.5.1",
     "prop-types": "^15.5.6",
