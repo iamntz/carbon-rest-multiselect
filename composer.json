@@ -1,0 +1,19 @@
+{
+    "name": "iamntz/carbon-rest-multiselect",
+    "description": "carbon rest multiselect",
+    "keywords": ["wordpress", "carbon-field"],
+    "homepage": "https://github.com/iamntz/carbon-rest-multiselect",
+    "type": "library",
+    "license": "GPL-2.0+",
+    "require": {
+        "htmlburger/carbon-fields": "^2.0"
+    },
+    "autoload": {
+        "files": [
+            "init.php"
+        ],
+        "psr-4": {
+            "iamntz\\Rest_Multiselect\\": "src/"
+        }
+    }
+}
