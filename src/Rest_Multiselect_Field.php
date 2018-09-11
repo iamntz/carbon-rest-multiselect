@@ -3,9 +3,7 @@
 namespace iamntz\Rest_Multiselect;
 
 use Carbon_Fields\Field\Predefined_Options_Field;
-
 use Carbon_Fields\Helper\Delimiter;
-use Carbon_Fields\Helper\Helper;
 use Carbon_Fields\Value_Set\Value_Set;
 
 class Rest_Multiselect_Field extends Predefined_Options_Field
@@ -28,9 +26,10 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 		return $this;
 	}
 
-	public function __construct( $type, $name, $label ) {
-		$this->set_value_set( new Value_Set( Value_Set::TYPE_MULTIPLE_VALUES ) );
-		parent::__construct( $type, $name, $label );
+	public function __construct($type, $name, $label)
+	{
+		$this->set_value_set(new Value_Set(Value_Set::TYPE_MULTIPLE_VALUES));
+		parent::__construct($type, $name, $label);
 	}
 
 	/**
@@ -40,19 +39,19 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 	 */
 	public function set_value_from_input($input)
 	{
-		if ( ! isset( $input[ $this->get_name() ] ) ) {
-			return $this->set_value( array() );
+		if (!isset($input[$this->get_name()])) {
+			return $this->set_value(array());
 		}
 
-		$value = stripslashes_deep( $input[ $this->get_name() ] );
+		$value = stripslashes_deep($input[$this->get_name()]);
 
-		$value = Delimiter::split( $value, $this->value_delimiter );
+		$value = Delimiter::split($value, $this->value_delimiter);
 
-		$value = array_map( function( $val ) {
-			return Delimiter::unquote( $val, $this->value_delimiter );
-		}, $value );
+		$value = array_map(function ($val) {
+			return Delimiter::unquote($val, $this->value_delimiter);
+		}, $value);
 
-		return $this->set_value( $value );
+		return $this->set_value($value);
 	}
 
 	/**
@@ -64,6 +63,8 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 	public function to_json($load)
 	{
 		$field_data = parent::to_json($load);
+
+		$field_data['value'] = array_filter($field_data['value']);
 
 		$field_data = array_merge($field_data, [
 			'value_delimiter' => $this->value_delimiter,

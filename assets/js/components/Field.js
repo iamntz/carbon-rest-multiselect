@@ -83,7 +83,7 @@ export const enhance = compose(
 		componentWillMount() {
 			let { field, setFieldValue, setSelected } = this.props;
 
-			if (field.value) {
+			if (field.value.length) {
 				let value = field.value.join(',');
 				getFetchPromise(field.fetch_by_id_endpoint + value, setSelected).then((data) => {
 					setFieldValue(field.id, data);
