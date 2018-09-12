@@ -8,7 +8,15 @@ use Carbon_Fields\Value_Set\Value_Set;
 
 class Rest_Multiselect_Field extends Predefined_Options_Field
 {
-	protected $endpoints = [];
+	protected $endpoints = [
+		'base' => null,
+		'search' => null,
+		'fetch_by_id' => null,
+	];
+
+	protected $value_key = 'id';
+	protected $label_key = ['title.rendered'];
+
 	protected $value_delimiter = '|';
 
 	public static function admin_enqueue_scripts()
@@ -22,6 +30,20 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 	public function set_endpoint($name, $endpoint)
 	{
 		$this->endpoints[$name] = $endpoint;
+
+		return $this;
+	}
+
+	public function set_value_key($key)
+	{
+		$this->value_key = $key;
+
+		return $this;
+	}
+
+	public function set_label_key($key)
+	{
+		$this->label_key = $key;
 
 		return $this;
 	}
@@ -66,13 +88,14 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 
 		$field_data['value'] = array_filter($field_data['value']);
 
-		$this->endpoints['base'] = $this->endpoints['base'] ?? '/';
-
 		$field_data = array_merge($field_data, [
 			'value_delimiter' => $this->value_delimiter,
 			'base_endpoint' => $this->endpoints['base'],
-			'search_endpoint' => $this->endpoint['search'] ?? $this->endpoints['base'] . '/?search=',
-			'fetch_by_id_endpoint' => $this->endpoint['fetch_by_id'] ?? $this->endpoints['base'] . '/?include=',
+			'search_endpoint' => $this->endpoints['search'],
+			'fetch_by_id_endpoint' => $this->endpoints['fetch_by_id'],
+
+			'value_key' => $this->value_key,
+			'label_key' => $this->label_key,
 		]);
 
 		return $field_data;

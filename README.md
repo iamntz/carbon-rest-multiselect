@@ -12,13 +12,22 @@ Usage:
 
 ```php
 Field::make('rest_multiselect', 'my-name', 'My Label')
-  ->set_endpoint( 'base', rest_url( 'wp/v2/posts' ) )
-  ->set_endpoint( 'search', rest_url( 'wp/v2/posts/?search=' ) )
-  ->set_endpoint( 'fetch_by_id', rest_url( 'wp/v2/posts/?include=' ) ) // endpoint used to look up for saved posts
+  ->set_endpoint( 'base', get_rest_url( null, 'wp/v2/posts' ) )
+  ->set_endpoint( 'search', get_rest_url( null, 'wp/v2/posts/?search=' ) )
+  ->set_endpoint( 'fetch_by_id', get_rest_url( null, 'wp/v2/posts/?include=' ) ) // endpoint used to look up for saved posts
+  ->set_value_key('id') // the REST response key to use as a value in the select
+  ->set_label_key('title.rendered') // OR
+  ->set_label_key(['date', 'title.rendered']); // the REST response key to use as a label in the select
 ```
 
+**ALL** endpoints are required!
+
+#### `set_label_key`
+
+This one is as extensible as it gets: you can use either a string, a dotted string (so it will search for children) or an array that will be combined in to a nicely formatted string.
+
 #### Credits
-**Heavily** inspired from [this awesome plugin](https://github.com/elvishp2006/carbon-field-rest-api-select). Unfortunately, there is no way of extending that one to allow multiple selection without breaking compatibility (different storage and such).
+**Heavily** inspired by @elvishp2006's [awesome plugin](https://github.com/elvishp2006/carbon-field-rest-api-select). Unfortunately, there is no way of extending that one to allow multiple selection without breaking compatibility (different storage and such).
 
 
 ### Support me

@@ -20,8 +20,7 @@ import withSetup from 'fields/decorators/with-setup';
 
 import AsyncSelect from 'react-select/lib/Async';
 import he from 'he';
-
-
+import { isObject, isArray } from 'lodash';
 export const rest_multiselect = ({
 	name,
 	field,
@@ -32,7 +31,9 @@ export const rest_multiselect = ({
 		<Field field={field}>
 			<AsyncSelect
 				name={name}
-				value={field.value && typeof field.value[0] === 'object' ? field.value : []}
+				value={
+					field.value && typeof field.value[0] === 'object' ? field.value : []
+				}
 				delimiter={field.value_delimiter}
 				disabled={!field.ui.is_visible}
 				loadOptions={loadOptions}
@@ -50,7 +51,20 @@ rest_multiselect.propTypes = {
 	field: PropTypes.shape({
 		id: PropTypes.string,
 		value: PropTypes.array,
+
+		label_key: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.array
+		]),
+
+		value_key: PropTypes.string,
+
+		value_delimiter: PropTypes.string.isRequired,
+		base_endpoint: PropTypes.string.isRequired,
+		search_endpoint: PropTypes.string.isRequired,
+		fetch_by_id_endpoint: PropTypes.string.isRequired,
 	}),
+
 	handleChange: PropTypes.func,
 	loadOptions: PropTypes.func,
 };
@@ -58,20 +72,25 @@ rest_multiselect.propTypes = {
 const resolve = (path, obj) =>
 	path.split('.').reduce((prev, curr) => (prev ? prev[curr] : null), obj);
 
-const getFetchPromise = (endpoint, setSelected = null) => {
+const getFetchPromise = (endpoint, setSelected, field) => {
 	let parseData = (data) => {
+		let label;
+		if (isArray(field.label_key)) {
+			label = field.label_key.map((piece) => resolve(piece, data)).join(' ');
+		} else {
+			label = resolve(field.label_key, data);
+		}
+
 		return {
-			value: resolve('id', data),
-			label: he.decode(resolve('title.rendered', data)),
+			value: resolve(field.value_key, data),
+			label: he.decode(label),
 		};
 	};
 
 	return fetch(endpoint)
 		.then((r) => r.json())
 		.then((data) => {
-			if ('function' === typeof setSelected) {
-				setSelected([data])
-			}
+			setSelected([data]);
 			return data.map(parseData);
 		});
 };
@@ -85,9 +104,13 @@ export const enhance = compose(
 		componentWillMount() {
 			let { field, setFieldValue, setSelected } = this.props;
 
-			if (field.value.length) {
+			if (field.value.length && field.fetch_by_id_endpoint.length) {
 				let value = field.value.join(',');
-				getFetchPromise(field.fetch_by_id_endpoint + value, setSelected).then((data) => {
+				getFetchPromise(
+					field.fetch_by_id_endpoint + value,
+					setSelected,
+					field,
+				).then((data) => {
 					setFieldValue(field.id, data);
 				});
 			}
@@ -104,7 +127,7 @@ export const enhance = compose(
 				? `${field.search_endpoint}${q}`
 				: field.base_endpoint;
 
-			return getFetchPromise(endpoint, setSelected);
+			return getFetchPromise(endpoint, setSelected, field);
 		},
 	}),
 );
