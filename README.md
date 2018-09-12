@@ -26,6 +26,16 @@ Field::make('rest_multiselect', 'my-name', 'My Label')
 
 This one is as extensible as it gets: you can use either a string, a dotted string (so it will search for children) or an array that will be combined in to a nicely formatted string.
 
+You can also set some transformations on labels:
+
+```php
+->set_label_key(['title.rendered|substring:0,10|toUpperCase', 'date|wrap(%label%)']);
+```
+
+Basically any JS prototype function that's callable on a string.
+
+There is an exception: you can use a `wrap` transform that will ... well, wrapp your label.
+
 #### Credits
 **Heavily** inspired by @elvishp2006's [awesome plugin](https://github.com/elvishp2006/carbon-field-rest-api-select). Unfortunately, there is no way of extending that one to allow multiple selection without breaking compatibility (different storage and such).
 
