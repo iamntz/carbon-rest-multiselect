@@ -18,6 +18,7 @@ Field::make('rest_multiselect', 'my-name', 'My Label')
   ->set_value_key('id') // the REST response key to use as a value in the select
   ->set_label_key('title.rendered') // OR
   ->set_label_key(['date', 'title.rendered']); // the REST response key to use as a label in the select
+  ->set_selection_limit(999) // what's the maximum amount of selectable items.
 ```
 
 **ALL** endpoints are required!
@@ -35,6 +36,14 @@ You can also set some transformations on labels:
 Basically any JS prototype function that's callable on a string.
 
 There is an exception: you can use a `wrap` transform that will ... well, wrapp your label.
+
+#### `set_selection_limit`
+You can set what's the maximum amount of selectable items. This will work ad infinitum, without any limit or warning (just like regular HTML `select` tag works). So any new selection will be appended to the existing items, therefore if the limit is reached, then the first element of the selection is lost, the new element will be appended.
+
+Basically if you add `->set_selection_limit(1)` you make the field to behave just like a regular HTML `select`.
+
+#### Return Value
+The field will _always_ return an array of items, with values picked form the key set via `set_value_key('id')` method.
 
 #### Credits
 **Heavily** inspired by @elvishp2006's [awesome plugin](https://github.com/elvishp2006/carbon-field-rest-api-select). Unfortunately, there is no way of extending that one to allow multiple selection without breaking compatibility (different storage and such).

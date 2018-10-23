@@ -52,6 +52,7 @@ rest_multiselect.propTypes = {
 		id: PropTypes.string,
 		value: PropTypes.array,
 
+		selection_limit: PropTypes.number.isRequired,
 		label_key: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
 		value_key: PropTypes.string,
@@ -146,6 +147,10 @@ export const enhance = compose(
 
 	withHandlers({
 		handleChange: ({ field, setFieldValue, setSelected }) => (value) => {
+			if (value && value.length >= field.selection_limit) {
+				setFieldValue(field.id, value.slice(value.length - field.selection_limit));
+				return;
+			}
 			setFieldValue(field.id, value);
 		},
 

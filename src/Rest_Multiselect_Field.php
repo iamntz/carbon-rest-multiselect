@@ -14,6 +14,7 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 		'fetch_by_id' => null,
 	];
 
+	protected $selection_limit = 999;
 	protected $value_key = 'id';
 	protected $label_key = ['title.rendered'];
 
@@ -48,6 +49,12 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 		return $this;
 	}
 
+	public function set_selection_limit($selection_limit){
+		$this->selection_limit = $selection_limit;
+
+		return $this;
+	}
+
 	public function __construct($type, $name, $label)
 	{
 		$this->set_value_set(new Value_Set(Value_Set::TYPE_MULTIPLE_VALUES));
@@ -73,7 +80,7 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 			return Delimiter::unquote($val, $this->value_delimiter);
 		}, $value);
 
-		return $this->set_value($value);
+		return $this->set_value(array_filter($value));
 	}
 
 	/**
@@ -96,6 +103,7 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 
 			'value_key' => $this->value_key,
 			'label_key' => $this->label_key,
+			'selection_limit' => $this->selection_limit,
 		]);
 
 		return $field_data;
