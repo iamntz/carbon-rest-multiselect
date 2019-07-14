@@ -2,10 +2,10 @@
 
 carbon rest multiselect
 
-Adds a `rest_multiselect` field type to Carbon Fields. Install using Composer:
+Adds a `rest_multiselect` field type to Carbon Fields 3. Install using Composer:
 
 ```cli
-composer require iamntz/carbon-rest-multiselect
+composer require iamntz/carbon-rest-multiselect:v3.x-dev
 ```
 
 Usage:
@@ -16,9 +16,9 @@ Field::make('rest_multiselect', 'my-name', 'My Label')
   ->set_endpoint( 'search', get_rest_url( null, 'wp/v2/posts/?search=' ) )
   ->set_endpoint( 'fetch_by_id', get_rest_url( null, 'wp/v2/posts/?include=' ) ) // endpoint used to look up for saved posts
   ->set_value_key('id') // the REST response key to use as a value in the select
-  ->set_label_key('title.rendered') // OR
-  ->set_label_key(['date', 'title.rendered']); // the REST response key to use as a label in the select
   ->set_selection_limit(999) // what's the maximum amount of selectable items.
+  ->set_label_key('title.rendered') // OR
+  ->set_label_key(['date', 'title.rendered']) // the REST response key to use as a label in the select
 ```
 
 **ALL** endpoints are required!
