@@ -1,14 +1,11 @@
 /**
  * External dependencies.
  */
-import { Component, Fragment } from '@wordpress/element';
-import { isObject, isArray, first, filter, some  } from 'lodash';
+import {Component} from '@wordpress/element';
+import {isArray} from 'lodash';
 import he from 'he';
 
-import cx from 'classnames';
-import { __ } from '@wordpress/i18n';
-
-import AsyncSelect  from 'react-select/async';
+import AsyncSelect from 'react-select/async';
 
 import labelTransforms from './inc/transforms';
 
@@ -36,11 +33,11 @@ class Field extends Component {
   }
 
   preloadSavedValues() {
-    const { field } = this.props;
+    const {field} = this.props;
 
     const value = field.value.join(',');
 
-    this.fetch(field.fetch_by_id_endpoint + value ).then(data => {
+    this.fetch(field.fetch_by_id_endpoint + value).then(data => {
 
       this.setState({
         loaded: true,
@@ -49,7 +46,7 @@ class Field extends Component {
     })
   }
 
-  fetch(endpoint){
+  fetch(endpoint) {
     const {field} = this.props;
 
     const parseData = (data) => {
@@ -83,7 +80,7 @@ class Field extends Component {
   limitResults(results) {
     const {selection_limit} = this.props.field;
 
-    if (results && results.length && selection_limit > 0 ){
+    if (results && results.length && selection_limit > 0) {
       results = results.slice(results.length - selection_limit);
     }
 
@@ -91,7 +88,7 @@ class Field extends Component {
   }
 
   onChange(selectedValues) {
-    const { id, onChange} = this.props;
+    const {id, onChange} = this.props;
 
     let value = this.limitResults(selectedValues)
 
@@ -103,7 +100,6 @@ class Field extends Component {
 
     onChange(id, value);
   }
-
 
   render() {
     const {field, value} = this.props;
@@ -121,7 +117,7 @@ class Field extends Component {
           onChange={(e) => this.onChange(e)}
         />
 
-        <input type="hidden" name={this.props.name} value={this.props.value} />
+        <input type="hidden" name={this.props.name} value={this.props.value}/>
       </div>
     );
   }

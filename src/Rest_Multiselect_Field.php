@@ -23,8 +23,9 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
   public static function admin_enqueue_scripts()
   {
     $root_uri = \Carbon_Fields\Carbon_Fields::directory_to_url(CARBON_REST_MULTISELECT_DIR);
+    $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 
-    wp_enqueue_script('rest-multiselect', $root_uri . '/assets/build/bundle.js', ['carbon-fields-core']);
+    wp_enqueue_script('rest-multiselect', $root_uri . "/assets/build/bundle{$suffix}.js", ['carbon-fields-core']);
     wp_enqueue_style('rest-multiselect', $root_uri . '/assets/build/bundle.css');
   }
 
