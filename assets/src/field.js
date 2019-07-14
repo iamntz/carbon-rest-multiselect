@@ -67,10 +67,20 @@ class Field extends Component {
     };
 
     return fetch(endpoint)
+      .then(response => {
+        if (response.ok) {
+          return response;
+        }
+        throw new Error(`Network response was not ok. Status: ${response.status} ${response.statusText}`);
+      })
       .then((r) => r.json())
       .then((data) => {
         return this.limitResults(data.map(parseData));
-      });
+      })
+      .catch((error) => {
+        console.warn("Something went wrong on fetching. Are you sure you set the correct endpoints?");
+        console.error(error)
+      })
   }
 
   loadOptions(query) {
