@@ -75,7 +75,7 @@ class Field extends Component {
       })
       .then((r) => r.json())
       .then((data) => {
-        return this.limitResults(data.map(parseData));
+        return data.map(parseData);
       })
       .catch((error) => {
         console.warn("Something went wrong on fetching. Are you sure you set the correct endpoints?");
@@ -100,7 +100,7 @@ class Field extends Component {
   onChange(selectedValues) {
     const {id, onChange} = this.props;
 
-    let value = this.limitResults(selectedValues)
+    let value = this.limitResults(selectedValues);
 
     this.setState({
       parsedValue: value
