@@ -122,6 +122,7 @@ class Field extends Component {
       <div>
         <AsyncSelect
           isMulti
+          defaultOptions
           value={this.state.parsedValue}
           loadOptions={(query) => this.loadOptions(query)}
           onChange={(e) => this.onChange(e)}
