@@ -3,7 +3,7 @@
   "version": "3.0.3",
   "scripts": {
     "start": "npm run development -- --watch",
-    "version": "node ./utils/version.js",
+    "version": "rexreplace \"_VERSION', (.*);\" \"_VERSION', '$npm_package_version');\" init.php",
     "build": "npm run version && npm run development && npm run production",
     "development": "cross-env NODE_ENV=development webpack --mode development",
     "production": "cross-env NODE_ENV=production webpack --mode production"
@@ -40,6 +40,7 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "replace": "^1.1.5",
+    "rexreplace": "^5.2.0",
     "sass-loader": "^7.1.0",
     "sass-resources-loader": "^2.0.0",
     "terser-webpack-plugin": "^1.1.0",
