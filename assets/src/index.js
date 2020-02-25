@@ -4,6 +4,6 @@
 import { registerFieldType } from '@carbon-fields/core';
 import './style.scss';
 
-import Field from './field';
+import Field from './Field';
 
 registerFieldType('rest_multiselect', Field);

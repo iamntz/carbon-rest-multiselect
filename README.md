@@ -1,11 +1,17 @@
-# Carbon Field: rest_multiselect
+# Carbon Field: `rest_multiselect`
 
-carbon rest multiselect
+Prov
 
 Adds a `rest_multiselect` field type to Carbon Fields 3. Install using Composer:
 
 ```cli
-composer require iamntz/carbon-rest-multiselect:v3.x-dev
+composer require iamntz/carbon-rest-multiselect:^3.0
+```
+
+For Carbon Fields 2 (legacy):
+
+```cli
+composer require iamntz/carbon-rest-multiselect:^2.0"
 ```
 
 Usage:
@@ -22,6 +28,7 @@ Field::make('rest_multiselect', 'my-name', 'My Label')
 ```
 
 **ALL** endpoints are required!
+If needed, you can specify nonces (or extra variables) directly on the endpoint url: `get_rest_url( null, "wp/v2/posts/?nonce={$generated_nonce}&search=" )`
 
 #### `set_label_key`
 
@@ -35,7 +42,7 @@ You can also set some transformations on labels:
 
 Basically any JS prototype function that's callable on a string.
 
-There is an exception: you can use a `wrap` transform that will ... well, wrapp your label.
+There is an exception: you can use a `wrap` transform that will ... well, wrap your label.
 
 #### `set_selection_limit`
 You can set what's the maximum amount of selectable items. This will work ad infinitum, without any limit or warning (just like regular HTML `select` tag works). So any new selection will be appended to the existing items, therefore if the limit is reached, then the first element of the selection is lost, the new element will be appended.
@@ -50,7 +57,7 @@ The field will _always_ return an array of items, with values picked form the ke
 
 
 ### Support me
-You can get [hosting](https://m.do.co/c/c95a44d0e992), [donate](https://www.paypal.me/iamntz) or buy me a [gift](http://iamntz.com/wishlist).
+You can get [hosting](https://m.do.co/c/c95a44d0e992), [donate](https://www.paypal.me/iamntz) or be my [patreon](https://www.patreon.com/iamntz).
 
 ### License
 
