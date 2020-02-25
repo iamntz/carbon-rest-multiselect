@@ -3,7 +3,7 @@
   "version": "3.0.3",
   "scripts": {
     "start": "npm run development -- --watch",
-    "version": "node ./utils/version.js",
+    "version": "cross-var rexreplace \"_VERSION', (.*);\" \"_VERSION', '$npm_package_version');\" init.php",
     "build": "npm run version && npm run development && npm run production",
     "development": "cross-env NODE_ENV=development webpack --mode development",
     "production": "cross-env NODE_ENV=production webpack --mode production"
@@ -30,6 +30,7 @@
     "babel-plugin-module-resolver": "^3.1.1",
     "classnames": "^2.2.6",
     "cross-env": "^5.2.1",
+    "cross-var": "^1.1.0",
     "css-loader": "^1.0.0",
     "lodash": "^4.17.14",
     "mini-css-extract-plugin": "^0.4.4",
@@ -40,6 +41,7 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "replace": "^1.1.5",
+    "rexreplace": "^5.2.0",
     "sass-loader": "^7.1.0",
     "sass-resources-loader": "^2.0.0",
     "terser-webpack-plugin": "^1.1.0",
