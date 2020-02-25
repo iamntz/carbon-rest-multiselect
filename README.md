@@ -11,7 +11,7 @@ composer require iamntz/carbon-rest-multiselect:^3.0
 For Carbon Fields 2 (legacy):
 
 ```cli
-composer require iamntz/carbon-rest-multiselect:^2.0"
+composer require iamntz/carbon-rest-multiselect:^2.0
 ```
 
 Usage:

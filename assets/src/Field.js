@@ -133,11 +133,6 @@ class Field extends Component {
 			return;
 		}
 
-		console.log('====================================');
-		console.log('====================================');
-		console.log(value);
-		console.log('====================================');
-		console.log('====================================');
 		if (!value.length) {
 			this.setState({
 				...this.state,
