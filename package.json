@@ -1,9 +1,9 @@
 {
   "name": "rest_multiselect",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "scripts": {
     "start": "npm run development -- --watch",
-    "version": "cross-var rexreplace \"_VERSION', (.*);\" \"_VERSION', '$npm_package_version');\" init.php",
+    "version": "cross-var rexreplace \"(_VERSION', )(.*);\" \"$1'$npm_package_version');\" init.php",
     "build": "npm run version && npm run development && npm run production",
     "development": "cross-env NODE_ENV=development webpack --mode development",
     "production": "cross-env NODE_ENV=production webpack --mode production"
