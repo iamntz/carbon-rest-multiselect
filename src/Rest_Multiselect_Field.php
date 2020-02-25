@@ -2,6 +2,7 @@
 
 namespace iamntz\Rest_Multiselect;
 
+use Carbon_Fields\Carbon_Fields;
 use Carbon_Fields\Helper\Delimiter;
 use Carbon_Fields\Value_Set\Value_Set;
 use Carbon_Fields\Field\Predefined_Options_Field;
@@ -22,11 +23,11 @@ class Rest_Multiselect_Field extends Predefined_Options_Field
 
     public static function admin_enqueue_scripts()
     {
-        $root_uri = \Carbon_Fields\Carbon_Fields::directory_to_url(CARBON_REST_MULTISELECT_DIR);
+        $root_uri = Carbon_Fields::directory_to_url(CARBON_REST_MULTISELECT_DIR);
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 
-        wp_enqueue_script('rest-multiselect', $root_uri . "/assets/build/bundle{$suffix}.js", ['carbon-fields-core']);
-        wp_enqueue_style('rest-multiselect', $root_uri . '/assets/build/bundle.css');
+        wp_enqueue_script('rest-multiselect', $root_uri . "/assets/build/bundle{$suffix}.js", ['carbon-fields-core'], CARBON_REST_MULTISELECT_VERSION, true);
+        wp_enqueue_style('rest-multiselect', $root_uri . '/assets/build/bundle.css', [], CARBON_REST_MULTISELECT_VERSION);
     }
 
     public function set_endpoint($name, $endpoint)

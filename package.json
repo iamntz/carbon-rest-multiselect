@@ -1,9 +1,10 @@
 {
-  "name": "restmultiselect",
-  "version": "1.0.0",
+  "name": "rest_multiselect",
+  "version": "3.0.3",
   "scripts": {
     "start": "npm run development -- --watch",
-    "build": "npm run development && npm run production",
+    "version": "node ./utils/version.js",
+    "build": "npm run version && npm run development && npm run production",
     "development": "cross-env NODE_ENV=development webpack --mode development",
     "production": "cross-env NODE_ENV=production webpack --mode production"
   },
@@ -38,6 +39,7 @@
     "postcss-preset-env": "^6.2.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "replace": "^1.1.5",
     "sass-loader": "^7.1.0",
     "sass-resources-loader": "^2.0.0",
     "terser-webpack-plugin": "^1.1.0",
